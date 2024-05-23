@@ -49,12 +49,10 @@ def cooccurrence_matrix(
         vectorizer=CountVectorizer):
     most_freq_words = get_most_frequent(text, size=max_vocab_size)
     vocab = generate_vocabulary(most_freq_words)
-
     windows = generate_windows(text, size=window_size)
     count_model = vectorizer(vocabulary=vocab)
     X = count_model.fit_transform(windows)
     Xc = (X.T * X)
-
     if same_word_zero:
         Xc.setdiag(0)
 
@@ -68,6 +66,7 @@ def nearest_neighbors(word, vocabulary, embeddings, n=10):
         return None
 
     vec = embeddings[idx].reshape(1, -1)
+
     sim = cosine_similarity(vec, embeddings)
     nn = sorted(
         vocabulary.keys(),
