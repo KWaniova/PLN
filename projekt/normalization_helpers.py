@@ -49,6 +49,7 @@ def remove_stopwords(words):
     """Remove stop words from list of tokenized words"""
     new_words = []
     polish_stopwords = open('polish_stopwords.txt', 'r').read().split('\n')
+    print(polish_stopwords[:10])
     for word in words:
         if word not in polish_stopwords:
             new_words.append(word)
@@ -73,6 +74,9 @@ def lemmatize_verbs(words):
     return lemmas
 
 def normalize(words):
+    """
+    Normalize words
+    """
     words = remove_non_ascii(words)
     words = replace_numbers(words)
     words = to_lowercase(words)
@@ -97,8 +101,16 @@ def tokenize_and_normalize(text):
     """
     Tokenize and normalize text
     """
-    words = sent.tokenize(text)
-    words = remove_end_lines(words)
-    words = normalize(words)
-    print(words[:10])
-    return words
+    sentenses = sent.tokenize(text)
+    print(sentenses)
+    sentenses = remove_end_lines(sentenses)
+    sents = []
+    for s in sentenses:
+        # print(s)
+        words = nltk.word_tokenize(s)
+        # print(words)
+        words = normalize(words)
+        # print(words)
+        sents.append(" ".join(words))
+    print(sents[:10])
+    return sents
