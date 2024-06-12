@@ -5,10 +5,7 @@ nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('gutenberg')
 nltk.download('averaged_perceptron_tagger')
-from bs4 import BeautifulSoup
-from nltk.tokenize import word_tokenize, sent_tokenize, TweetTokenizer
-from nltk.corpus import stopwords
-from nltk.stem import LancasterStemmer, PorterStemmer,WordNetLemmatizer
+from nltk.stem import LancasterStemmer, WordNetLemmatizer
 import inflect
 
 def remove_non_ascii(words):
@@ -77,8 +74,31 @@ def lemmatize_verbs(words):
 
 def normalize(words):
     words = remove_non_ascii(words)
+    words = replace_numbers(words)
     words = to_lowercase(words)
     words = remove_punctuation(words)
-    words = replace_numbers(words)
     words = remove_stopwords(words)
+    return words
+
+
+# Load the Polish tokenizer
+sent = nltk.data.load(
+    'tokenizers/punkt/polish.pickle'
+)
+
+def remove_end_lines(text):
+    data = []
+    for item in text:
+        data.append(item.replace('\n', ' '))
+    return data
+
+
+def tokenize_and_normalize(text):
+    """
+    Tokenize and normalize text
+    """
+    words = sent.tokenize(text)
+    words = remove_end_lines(words)
+    words = normalize(words)
+    print(words[:10])
     return words
