@@ -81,7 +81,7 @@ def normalize(words):
     words = replace_numbers(words)
     words = to_lowercase(words)
     words = remove_punctuation(words)
-    words = remove_stopwords(words)
+    # words = remove_stopwords(words)
     return words
 
 
